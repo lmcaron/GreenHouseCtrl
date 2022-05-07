@@ -68,13 +68,6 @@ void loop() {
   Serial.print("Temperature:");
   Serial.println(t, 1);
 
-  deltaTime3 = now - time3;
-  if (deltaTime3 > 15000) {
-    Serial.print("TemperatureGraph:");
-    Serial.println(t, 1);
-    time3 = now;
-  }
-
   if (Serial.available() > 0) {
     // read the incoming byte:
     incomingByte = Serial.read();
