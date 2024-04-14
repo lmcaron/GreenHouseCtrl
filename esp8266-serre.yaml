@@ -1,0 +1,54 @@
+esphome:
+  name: "esp8266-serre"
+  friendly_name: ESP8266-Serre
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "viAhjD9pLWwXFAnwBIYhoRT1PM+x0WaHEPzY+y/y4Ws="
+
+ota:
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esphome-Web-75279D"
+    password: "yZ4FBiuzHGnl"
+
+captive_portal:
+
+mqtt:
+  broker: 192.168.0.63
+
+sensor:
+  - platform: dht
+    pin: GPIO2
+    temperature:
+      name: "temperature serre sous-sol"
+      id: t_serre_bas
+      on_value:
+      - mqtt.publish_json:
+          topic: temperature_serre_bas
+          payload: |-
+            root["temperature"] = id(t_serre_bas).state;
+    humidity:
+      name: "humidité serre sous-sol"
+      id: h_serre_bas
+      on_value:
+      - mqtt.publish_json:
+          topic: humidity_serre_bas
+          payload: |-
+            root["humidity"] = id(h_serre_bas).state;
+    update_interval: 30s
+
+    
